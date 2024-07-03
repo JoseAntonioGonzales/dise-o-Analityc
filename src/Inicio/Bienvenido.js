@@ -5,7 +5,10 @@ function Inicio() {
     const [sucursales, setSucursales] = useState([]);
     const [tiposVenta, setTiposVenta] = useState([]);
     const [ventaInfo, setVentaInfo] = useState(null);
+    const [selectedSucursal, setSelectedSucursal] = useState("");
     const [selectedTipoVenta, setSelectedTipoVenta] = useState("");
+    const [fechaInicio, setFechaInicio] = useState("");
+    const [fechaFin, setFechaFin] = useState("");
 
     useEffect(() => {
         const fetchData = async () => {
@@ -48,9 +51,9 @@ function Inicio() {
         }
     };
 
-    const getVentaById = async (id) => {
+    const getVentaById = async (id, tipoVenta, fechaInicio, fechaFin) => {
         try {
-            const response = await ApiGetFunction('ventaId', { id });
+            const response = await ApiGetFunction('ventaId', { id, tipoVenta, fechaInicio, fechaFin });
             return response;
         } catch (error) {
             console.log('Error en getVentaById:', error);
@@ -58,24 +61,22 @@ function Inicio() {
         }
     };
 
-    const handleTipoVentaChange = async (event) => {
-        const tipoVentaId = event.target.value;
-        setSelectedTipoVenta(tipoVentaId);
-
-        const ventaData = await getVentaById(tipoVentaId);
+    const handleSearch = async () => {
+        const ventaData = await getVentaById(selectedSucursal, selectedTipoVenta, fechaInicio, fechaFin);
         setVentaInfo(ventaData);
     };
 
     return (
         <div>
-            <select>
+            <select onChange={(e) => setSelectedSucursal(e.target.value)}>
+                <option value="">Seleccione una sucursal</option>
                 {sucursales.map(sucursal => (
                     <option key={sucursal.id} value={sucursal.id}>
                         {sucursal.nombre}
                     </option>
                 ))}
             </select>
-            <select onChange={handleTipoVentaChange}>
+            <select onChange={(e) => setSelectedTipoVenta(e.target.value)}>
                 <option value="">Seleccione un tipo de venta</option>
                 {tiposVenta.map(tipo => (
                     <option key={tipo.id} value={tipo.id}>
@@ -83,6 +84,9 @@ function Inicio() {
                     </option>
                 ))}
             </select>
+            <input type="date" value={fechaInicio} onChange={(e) => setFechaInicio(e.target.value)} />
+            <input type="date" value={fechaFin} onChange={(e) => setFechaFin(e.target.value)} />
+            <button onClick={handleSearch}>Buscar</button>
             {ventaInfo && (
                 <div>
                     <h2>Información de la Venta</h2>
