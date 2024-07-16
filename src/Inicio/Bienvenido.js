@@ -120,8 +120,7 @@ function Inicio() {
                             </div>
                         </div>
                         <div className="border p-4 rounded-lg bg-white shadow">
-                            <h3 className="text-lg mb-2 text-blue-700">VENTAS</h3>
-                            <p className="text-2xl text-gray-800">{ventaInfo ? ventaInfo.numero : "NUM"}</p>
+                            <p className="text-2xl text-gray-800">NUM</p>
                         </div>
                     </div>
                 </div>
