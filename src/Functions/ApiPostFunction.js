@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const serverUrl = 'http://localhost:3001/api/post';
+const serverUrl = 'http://localhost:5000';
 
 const urls = {
     putData: serverUrl + '/',
